@@ -1,29 +1,40 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+//const jwt = require('jsonwebtoken');
 const mysql = require('mysql');
+const cors = require('cors');
 
 const app = express();
 app.use(express.json());
 
+app.use(cors());
+
 // Database connection (Amazon RDS)
 const db = mysql.createConnection({
-  host: 'your-rds-endpoint',
-  user: 'your-db-username',
-  password: 'your-db-password',
-  database: 'your-db-name',
+  host: 'fp-db.cv6gmqoyu9y2.us-east-2.rds.amazonaws.com',
+  user: 'admin',
+  password: 'group5sql',
+  database: 'fp-db',
+});
+
+db.connect((err) => {
+  if (err) {
+    console.error('Database connection failed:', err.stack);
+    return;
+  }
+  console.log('Connected to database');
 });
 
 // Registration Route
 app.post('/api/register', async (req, res) => {
-  const { email, password } = req.body;
+  const { name, email, password, gender, height, weight, age } = req.body;
   try {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Save the user in the database
-    const query = 'INSERT INTO users (email, password) VALUES (?, ?)';
-    db.query(query, [email, hashedPassword], (err, results) => {
+    const query = 'INSERT INTO User (name, email, password_hash, gender, height, weight, age) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    db.query(query, [name, email, hashedPassword, gender, height, weight, age], (err, results) => {
       if (err) return res.status(500).send('Server error');
       res.status(201).send('User registered successfully');
     });
@@ -37,7 +48,7 @@ app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
 
   // Query the database to find the user by email
-  const query = 'SELECT * FROM users WHERE email = ?';
+  const query = 'SELECT * FROM User WHERE email = ?';
   db.query(query, [email], async (err, results) => {
     if (err) return res.status(500).send('Server error');
     
@@ -49,13 +60,13 @@ app.post('/api/login', (req, res) => {
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) return res.status(401).send('Incorrect password');
 
-    // Generate JWT token
+    /* Generate JWT token
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+    res.json({ token });*/
   });
 });
 
 // Start the server
-app.listen(5000, () => {
-  console.log('Server is running on port 5000');
+app.listen(5001, () => {
+  console.log('Server is running on port 5001');
 });

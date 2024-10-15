@@ -15,7 +15,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/login', { email, password });
+      const response = await axios.post('http://localhost:5001/api/login', { email, password });
       localStorage.setItem('token', response.data.token);
       console.log('Login successful:', response.data.token);
     } catch (error) {
@@ -26,7 +26,7 @@ const Login = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/register', {
+      const response = await axios.post('http://localhost:5001/api/register', {
         name,
         email,
         password,
@@ -38,7 +38,12 @@ const Login = () => {
       console.log('Registration successful:', response.data);
       setIsRegistering(false); // Switch back to login after successful registration
     } catch (error) {
-      console.error('Registration failed:', error.response.data);
+      // Check if error.response exists before trying to access its data
+      if (error.response) {
+        console.error('Registration failed:', error.response.data);
+      } else {
+        console.error('Registration failed: No response from server');
+      }
     }
   };
 
