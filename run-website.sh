@@ -46,20 +46,42 @@ else
     echo "npm is already installed."
 fi
 
-# Install dependencies
-echo "Installing dependencies..."
+# Install frontend dependencies
+echo "Installing frontend dependencies..."
 if npm install; then
-    echo "Dependencies installed successfully."
+    echo "Frontend dependencies installed successfully."
 else
-    echo "Failed to install dependencies."
+    echo "Failed to install frontend dependencies."
     exit 1
 fi
 
-# Start the project
-echo "Starting the project..."
-if npm start; then
-    echo "Project started successfully."
+# Start the frontend
+echo "Starting the frontend..."
+npm start &  # Running frontend in the background
+if [ $? -eq 0 ]; then
+    echo "Frontend started successfully."
 else
-    echo "Failed to start the project."
+    echo "Failed to start the frontend."
+    exit 1
+fi
+
+# Navigate to the backend directory
+cd ../../../backend || { echo "Backend directory not found"; exit 1; }
+
+# Install backend dependencies
+echo "Installing backend dependencies..."
+if npm install; then
+    echo "Backend dependencies installed successfully."
+else
+    echo "Failed to install backend dependencies."
+    exit 1
+fi
+
+# Start the backend
+echo "Starting the backend..."
+if node Server.js; then
+    echo "Backend started successfully."
+else
+    echo "Failed to start the backend."
     exit 1
 fi

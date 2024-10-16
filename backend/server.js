@@ -57,7 +57,7 @@ app.post('/api/login', (req, res) => {
     const user = results[0];
 
     // Check if the password is correct by comparing with hashed password
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, user.password_hash);
     if (!passwordMatch) return res.status(401).send('Incorrect password');
 
     /* Generate JWT token
