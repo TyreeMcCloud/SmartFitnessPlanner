@@ -58,7 +58,14 @@ fi
 # Start the frontend
 echo "Starting the frontend..."
 npm start &  # Running frontend in the background
-if [ $? -eq 0 ]; then
+FRONTEND_PID=$!  # Capture the frontend process ID
+
+# Wait for frontend to fully start (adjust timeout as needed)
+echo "Waiting for frontend to start..."
+sleep 15  # Give time for the frontend to start (can be adjusted based on your system's speed)
+
+# Check if the frontend is running
+if ps -p $FRONTEND_PID > /dev/null; then
     echo "Frontend started successfully."
 else
     echo "Failed to start the frontend."
@@ -66,7 +73,7 @@ else
 fi
 
 # Navigate to the backend directory
-cd ../../../backend || { echo "Backend directory not found"; exit 1; }
+cd ../../backend || { echo "Backend directory not found"; exit 1; }
 
 # Install backend dependencies
 echo "Installing backend dependencies..."
@@ -79,7 +86,7 @@ fi
 
 # Start the backend
 echo "Starting the backend..."
-if node Server.js; then
+if node server.js; then
     echo "Backend started successfully."
 else
     echo "Failed to start the backend."

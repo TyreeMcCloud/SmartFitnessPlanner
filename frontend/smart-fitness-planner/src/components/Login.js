@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+import WorkoutPlan from './WorkoutPlan';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isRegistering, setIsRegistering] = useState(false); // State to toggle between Login and Register
@@ -11,17 +14,29 @@ const Login = () => {
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [age, setAge] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    console.log('Login button clicked');
+    setErrorMessage('');
+    
     try {
       const response = await axios.post('http://localhost:5001/api/login', { email, password });
-      localStorage.setItem('token', response.data.token);
-      console.log('Login successful:', response.data.token);
+      console.log('Response:', response); // Log the entire response
+      console.log('Login successful:', response.data.message);
+      
+      // Check if the response status is OK before navigating
+      if (response.status === 200) {
+        navigate('/workoutplan'); // Navigate to the WorkoutPlan after successful login
+      }
     } catch (error) {
-      console.error('Login failed:', error.response.data);
+      console.error('Login failed:', error.response ? error.response.data : error);
+      setErrorMessage('Login failed. Please check your credentials and try again.');
     }
   };
+
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -37,12 +52,18 @@ const Login = () => {
       });
       console.log('Registration successful:', response.data);
       setIsRegistering(false); // Switch back to login after successful registration
+      navigate('/workoutplan'); // Navigate to the WorkoutPlan after successful registration
     } catch (error) {
       // Check if error.response exists before trying to access its data
       if (error.response) {
         console.error('Registration failed:', error.response.data);
+        if (error.response.status === 409) {
+          setErrorMessage('Email already in use. Please use a different email.');
+        } else {
+          setErrorMessage('Registration failed. Please try again.');
+        }
       } else {
-        console.error('Registration failed: No response from server');
+        setErrorMessage('Registration failed: No response from server.');
       }
     }
   };
