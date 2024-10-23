@@ -60,11 +60,14 @@ const WorkoutPlan = () => {
         return; // Exit if validation fails
     }
 
+     const userId = 2;
+
     const totalTimeEstimate = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`; // Format as HH:MM:SS
 
     try {
         // Send the selected muscle group's data to the server
         await axios.post('http://localhost:5001/api/workout-plans', {
+            user_id: userId,
             fitness_goals: fitnessGoals,
             workout_days: workoutDays.join(','), // Join array to store as comma-separated string
             time_estimate: totalTimeEstimate,

@@ -115,15 +115,17 @@ app.get('/api/workout-plans', (req, res) => {
 app.post('/api/workout-plans', (req, res) => {
 
   console.log('Request body:', req.body);
-  const { fitness_goals, workout_days, time_estimate } = req.query; // Use req.query for URL query parameters
+  const { user_id, fitness_goals, workout_days, time_estimate } = req.body; // Use req.query for URL query parameters
 
-  if (!fitness_goals || !workout_days || !time_estimate) {
-    console.log('Missing required fields:', { fitness_goals, workout_days, time_estimate });
+
+  // Check if all required fields are provided
+  if (!user_id || !fitness_goals || !workout_days || !time_estimate) {
+    console.log('Missing required fields:', { user_id, fitness_goals, workout_days, time_estimate });
     return res.status(400).send('Please provide all required fields');
-}
+  }
 
-  const query = 'INSERT INTO Workout_Plan (fitness_goals, workout_days, time_estimate) VALUES (?, ?, ?)';
-  db.query(query, [fitness_goals, workout_days, time_estimate], (error, results) => {
+  const query = 'INSERT INTO Workout_Plan (user_id, fitness_goals, workout_days, time_estimate) VALUES (?, ?, ?, ?)';
+  db.query(query, [user_id, fitness_goals, workout_days, time_estimate], (error, results) => {
     if (error) {
       console.error('Error creating workout plan:', error);
       res.status(500).send('Error creating workout plan');
