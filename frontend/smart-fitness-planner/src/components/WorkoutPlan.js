@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
 const WorkoutPlan = () => {
@@ -232,7 +233,11 @@ const handleDelete = async (planId) => {
           <div className="col-md-4" key={plan.workout_plan_id}>
             <div className="card mt-4">
               <div className="card-body">
-                <h5 className="card-title">Plan ID: {plan.workout_plan_id}</h5>
+              <h5 className="card-title">
+              <Link to={`/workout-plan/${plan.workout_plan_id}`}>
+               Plan ID: {plan.workout_plan_id}
+              </Link>
+              </h5>
                 <p className="card-text">Goals: {plan.fitness_goals}</p>
                 <p className="card-text">Days: {plan.workout_days}</p>
                 <p className="card-text">Estimated Time: {plan.time_estimate}</p>

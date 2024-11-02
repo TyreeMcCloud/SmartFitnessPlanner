@@ -1,6 +1,7 @@
 import './App.css';
 import Login from './components/Login';
 import WorkoutPlan from './components/WorkoutPlan';
+import WorkoutPlanDetail from './components/WorkoutPlanDetail';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           {/* Define your routes */}
           <Route exact path="/" element={<Login />} />
           <Route path="/workoutplan" element={<WorkoutPlan />} />
+          <Route path="/workout-plan/:id" element={<WorkoutPlanDetail />} />
         </Routes>
       </header>
     </div>
