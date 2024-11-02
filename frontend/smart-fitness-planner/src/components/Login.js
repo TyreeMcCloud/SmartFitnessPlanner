@@ -15,6 +15,7 @@ const Login = () => {
   const [weight, setWeight] = useState('');
   const [age, setAge] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -29,6 +30,10 @@ const Login = () => {
       
       // Check if the response status is OK before navigating
       if (response.status === 200) {
+        const { user_id } = response.data; // Assuming response contains `user_id`
+        setUserId(user_id); // Set user_id in state
+        localStorage.setItem('user_id', user_id); // Store user_id in local storage
+        navigate('/workoutplan', { state: { userId: user_id } });
         navigate('/workoutplan'); // Navigate to the WorkoutPlan after successful login
       }
     } catch (error) {
@@ -51,6 +56,8 @@ const Login = () => {
         age
       });
       console.log('Registration successful:', response.data);
+      const { user_id } = response.data; // Assuming response contains `user_id`
+      localStorage.setItem('user_id', user_id); // Store user_id in local storage
       setIsRegistering(false); // Switch back to login after successful registration
       navigate('/workoutplan'); // Navigate to the WorkoutPlan after successful registration
     } catch (error) {
@@ -95,12 +102,12 @@ const Login = () => {
                         className="form-control" 
                         value={gender} 
                         onChange={(e) => setGender(e.target.value)} 
-                        required 
+                        required
                       />
                     </div>
                     <div className="form-group mt-3">
                       <label>Height (cm):</label>
-                      <input 
+                      <input
                         type="number" 
                         className="form-control" 
                         value={height} 

@@ -57,7 +57,11 @@ app.post('/api/register', async (req, res) => {
           console.error('Database insert error:', err);
           return res.status(500).send('Server error');
         }
-        res.status(201).send('User registered successfully');
+
+        // Get the newly created user's ID
+        const userId = results.insertId;
+
+        res.status(201).send({ message: 'User registered successfully', user_id: userId });
       });
     });
   } catch (error) {
@@ -92,7 +96,7 @@ app.post('/api/login', async (req, res) => {
     }
 
     // Send a success response
-    res.status(200).send({ message: 'Login successful' });
+     res.status(200).send({ message: 'Login successful', user_id: user.user_id }); // Include `user_id`
   });
 });
 
@@ -100,13 +104,21 @@ app.post('/api/login', async (req, res) => {
 
 // Route to get all workout plans (in plain text or other format)
 app.get('/api/workout-plans', (req, res) => {
-  const query = 'SELECT * FROM Workout_Plan';
-  db.query(query, (error, results) => {
+
+  const { user_id } = req.query;
+
+  if (!user_id) {
+    return res.status(400).json({ message: 'User ID is required' });
+  }
+
+  // Query to retrieve workout plans only for the specified user
+  const query = 'SELECT * FROM Workout_Plan WHERE user_id = ?';
+  db.query(query, [user_id], (error, results) => {
     if (error) {
-      console.error('Error fetching workout plans:', error);
-      res.status(500).json({ message: 'Error fetching workout plans' }); // Return error in JSON
+      console.error('Error retrieving workout plans:', error);
+      res.status(500).send({ message: 'Error retrieving workout plans' });
     } else {
-      res.json(results); // Send the results back as JSON
+      res.json(results); // Send back only the workout plans for this user
     }
   });
 });

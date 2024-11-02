@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
+import { useLocation } from 'react-router-dom';
 
 const WorkoutPlan = () => {
+  const location = useLocation();
+  const userId = location.state?.userId; // Access userId from route state
   const [workoutPlans, setWorkoutPlans] = useState([]);
   const [selectedMuscleGroup, setSelectedMuscleGroup] = useState('');
   const [formData, setFormData] = useState({
@@ -21,13 +24,26 @@ const WorkoutPlan = () => {
     shoulders: ['Build Muscle', 'Improve Mobility', 'Increase Strength'],
   };
 
-  useEffect(() => {
+ /* useEffect(() => {
     fetchWorkoutPlans();
-  }, []);
+  }, []);*/
+  useEffect(() => {
+    const userId = localStorage.getItem('user_id');
+    if (userId) {
+      axios.get(`http://localhost:5001/api/workout-plans?user_id=${userId}`)
+        .then(response => setWorkoutPlans(response.data))
+        .catch(error => console.error('Error fetching workout plans:', error));
+    }
+  }, [userId]);
 
   const fetchWorkoutPlans = async () => {
+    const userId = localStorage.getItem('user_id');
+    if (!userId) {
+      console.error("User ID not found. Please log in.");
+      return; // Exit early if userId is not set
+    }
     try {
-      const response = await axios.get('http://localhost:5001/api/workout-plans'); // Adjust the endpoint as needed
+      const response = await axios.get(`http://localhost:5001/api/workout-plans?user_id=${userId}`); // Adjust the endpoint
       setWorkoutPlans(response.data);
     } catch (error) {
       console.error('Error fetching workout plans:', error);
@@ -60,9 +76,14 @@ const WorkoutPlan = () => {
         return; // Exit if validation fails
     }
 
-     const userId = 2;
-
     const totalTimeEstimate = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`; // Format as HH:MM:SS
+
+     //const userId = 2;
+    const userId = localStorage.getItem('user_id'); // Retrieve user_id from local storage
+    if (!userId) {
+      console.error("User ID not found. Please log in.");
+      return;
+    }
 
     try {
         // Send the selected muscle group's data to the server
