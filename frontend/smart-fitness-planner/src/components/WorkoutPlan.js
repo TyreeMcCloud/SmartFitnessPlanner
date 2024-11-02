@@ -102,6 +102,15 @@ const WorkoutPlan = () => {
     }
 };
 
+const handleDelete = async (planId) => {
+  console.log('Delete button clicked');
+  try {
+    await axios.delete(`http://localhost:5001/api/workout-plans/${planId}`); // Corrected to use path parameter
+    fetchWorkoutPlans(); // Refresh the list after deletion
+  } catch (error) {
+    console.error('Error deleting workout plan:', error);
+  }
+};
 
 
   return (
@@ -227,6 +236,12 @@ const WorkoutPlan = () => {
                 <p className="card-text">Goals: {plan.fitness_goals}</p>
                 <p className="card-text">Days: {plan.workout_days}</p>
                 <p className="card-text">Estimated Time: {plan.time_estimate}</p>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => handleDelete(plan.workout_plan_id)}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </div>

@@ -148,6 +148,23 @@ app.post('/api/workout-plans', (req, res) => {
   });
 });
 
+//Delete workout plan
+app.delete('/api/workout-plans/:id', async (req, res) => {
+  const planId = req.params.id;
+
+  try {
+    // Assuming you're using a SQL database with a query function
+    // Replace with your database's delete query syntax as needed
+    const deleteQuery = 'DELETE FROM Workout_Plan WHERE workout_plan_id = ?';
+    await db.query(deleteQuery, [planId]);
+
+    res.status(200).json({ message: 'Workout plan deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting workout plan:', error);
+    res.status(500).json({ message: 'Failed to delete workout plan' });
+  }
+});
+
 
 
 
