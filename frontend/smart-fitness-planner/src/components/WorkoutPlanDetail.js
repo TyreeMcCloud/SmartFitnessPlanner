@@ -14,7 +14,7 @@ const exercises = {
     ],
     videos: [
       'https://www.youtube.com/watch?v=IODxDxX7oi4',
-      'https://www.youtube.com/watch?v=0C_y8Z2u7RA',
+      'https://www.youtube.com/watch?v=QENKPHhQVi4',
     ],
   },
   back: {
@@ -26,8 +26,8 @@ const exercises = {
       { name: 'Seated Cable Rows', duration: 6 },
     ],
     videos: [
-      'https://www.youtube.com/watch?v=keSSgX8w_H0',
-      'https://www.youtube.com/watch?v=6ZZI02PscG4',
+      'https://www.youtube.com/watch?v=p40iUjf02j0',
+      'https://www.youtube.com/watch?v=XxWcirHIwVo',
     ],
   },
   legs: {
@@ -39,8 +39,8 @@ const exercises = {
       { name: 'Leg Curls', duration: 3 },
     ],
     videos: [
-      'https://www.youtube.com/watch?v=aclHkVaku9U',
-      'https://www.youtube.com/watch?v=V3tsZlQCHdE',
+      'https://www.youtube.com/watch?v=gcNh17Ckjgg',
+      'https://www.youtube.com/watch?v=1LuRcKJMn8w',
     ],
   },
   arms: {
@@ -52,8 +52,8 @@ const exercises = {
       { name: 'Concentration Curls', duration: 3 },
     ],
     videos: [
-      'https://www.youtube.com/watch?v=ykJmrZ5v0Oo',
-      'https://www.youtube.com/watch?v=nRiJVZDpdL0',
+      'https://www.youtube.com/watch?v=jjnJHhzZUUM',
+      'https://www.youtube.com/watch?v=l3rHYPtMUo8',
     ],
   },
   shoulders: {
@@ -65,7 +65,7 @@ const exercises = {
       { name: 'Arnold Press', duration: 5 },
     ],
     videos: [
-      'https://www.youtube.com/watch?v=B-aVuyhvLHU',
+      'https://www.youtube.com/watch?v=QAQ64hK4Xxs',
       'https://www.youtube.com/watch?v=3VcKaXpzqRo',
     ],
   },
