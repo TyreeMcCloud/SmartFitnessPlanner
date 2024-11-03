@@ -222,7 +222,6 @@ const handleDelete = async (planId) => {
                 <option value="15">15</option>
                 <option value="30">30</option>
                 <option value="45">45</option>
-                <option value="60">60</option>
               </select>
             </div>
           </div>
