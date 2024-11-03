@@ -165,6 +165,24 @@ app.delete('/api/workout-plans/:id', async (req, res) => {
   }
 });
 
+// Route to get a specific workout plan by ID
+app.get('/api/workout-plans/:id', (req, res) => {
+  const planId = req.params.id;
+
+  const query = 'SELECT * FROM Workout_Plan WHERE workout_plan_id = ?'; // Ensure this matches your DB schema
+  db.query(query, [planId], (error, results) => {
+    if (error) {
+      console.error('Error retrieving workout plan:', error);
+      return res.status(500).send({ message: 'Error retrieving workout plan' });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).send({ message: 'Workout plan not found' }); // Handle case where no plan is found
+    }
+
+    res.json(results[0]); // Assuming you want to send back a single workout plan
+  });
+});
 
 
 

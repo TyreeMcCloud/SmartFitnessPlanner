@@ -79,29 +79,32 @@ const WorkoutPlan = () => {
 
     const totalTimeEstimate = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:00`; // Format as HH:MM:SS
 
-     //const userId = 2;
+    // Combine muscle group and fitness goal
+    const combinedFitnessGoal = `${selectedMuscleGroup.charAt(0).toUpperCase() + selectedMuscleGroup.slice(1)} - ${fitnessGoals}`;
+
     const userId = localStorage.getItem('user_id'); // Retrieve user_id from local storage
     if (!userId) {
-      console.error("User ID not found. Please log in.");
-      return;
+        console.error("User ID not found. Please log in.");
+        return;
     }
 
     try {
         // Send the selected muscle group's data to the server
         await axios.post('http://localhost:5001/api/workout-plans', {
             user_id: userId,
-            fitness_goals: fitnessGoals,
+            fitness_goals: combinedFitnessGoal, // Use the combined string
             workout_days: workoutDays.join(','), // Join array to store as comma-separated string
             time_estimate: totalTimeEstimate,
         });
 
-        console.log('Executing SQL:', [fitnessGoals, workoutDays, totalTimeEstimate]);
+        console.log('Executing SQL:', [combinedFitnessGoal, workoutDays, totalTimeEstimate]);
         console.log('Workout plan created for', selectedMuscleGroup);
         fetchWorkoutPlans(); // Refresh the workout plans after creating a new one
     } catch (error) {
         console.error('Error creating workout plan:', error.response ? error.response.data : error.message);
     }
 };
+
 
 const handleDelete = async (planId) => {
   console.log('Delete button clicked');
