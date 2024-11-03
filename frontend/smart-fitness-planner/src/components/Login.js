@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import WorkoutPlan from './WorkoutPlan';
 import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ setUserName }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,9 +30,12 @@ const Login = () => {
       
       // Check if the response status is OK before navigating
       if (response.status === 200) {
-        const { user_id } = response.data; // Assuming response contains `user_id`
+        const { user_id, name } = response.data; // Assuming response contains `user_id`
         setUserId(user_id); // Set user_id in state
         localStorage.setItem('user_id', user_id); // Store user_id in local storage
+        localStorage.setItem('name', name);
+        setUserName(name); // Update App state with the user's name
+
         navigate('/workoutplan', { state: { userId: user_id } });
         navigate('/workoutplan'); // Navigate to the WorkoutPlan after successful login
       }
@@ -47,6 +50,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:5001/api/register', {
+        // eslint-disable-next-line no-use-before-define
         name,
         email,
         password,
@@ -56,8 +60,9 @@ const Login = () => {
         age
       });
       console.log('Registration successful:', response.data);
-      const { user_id } = response.data; // Assuming response contains `user_id`
+      const { user_id, name } = response.data; // Assuming response contains `user_id`
       localStorage.setItem('user_id', user_id); // Store user_id in local storage
+      localStorage.setItem('name', name);
       setIsRegistering(false); // Switch back to login after successful registration
       navigate('/workoutplan'); // Navigate to the WorkoutPlan after successful registration
     } catch (error) {

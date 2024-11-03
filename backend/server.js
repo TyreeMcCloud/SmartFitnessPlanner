@@ -61,7 +61,7 @@ app.post('/api/register', async (req, res) => {
         // Get the newly created user's ID
         const userId = results.insertId;
 
-        res.status(201).send({ message: 'User registered successfully', user_id: userId });
+        res.status(201).send({ message: 'User registered successfully', user_id: userId,  name: name });
       });
     });
   } catch (error) {
@@ -96,7 +96,7 @@ app.post('/api/login', async (req, res) => {
     }
 
     // Send a success response
-     res.status(200).send({ message: 'Login successful', user_id: user.user_id }); // Include `user_id`
+     res.status(200).send({ message: 'Login successful', user_id: user.user_id, name: user.name }); // Include `user_id`
   });
 });
 
