@@ -96,15 +96,18 @@ const Login = () => {
                       />
                     </div>
                     <div className="form-group mt-3">
-                      <label>Gender:</label>
-                      <input 
-                        type="text" 
-                        className="form-control" 
-                        value={gender} 
-                        onChange={(e) => setGender(e.target.value)} 
-                        required
-                      />
-                    </div>
+                    <label>Gender:</label>
+                   <select
+                  className="form-control"
+                  value={gender}
+                   onChange={(e) => setGender(e.target.value)}
+                   required
+                   >
+                 <option value="Male">Male</option>
+                 <option value="Female">Female</option>
+                 <option value="Other">Other</option>
+                 </select>
+                 </div>
                     <div className="form-group mt-3">
                       <label>Height (cm):</label>
                       <input

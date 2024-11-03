@@ -164,28 +164,34 @@ const handleDelete = async (planId) => {
               </select>
             </div>
             <div className="form-group">
-              <label htmlFor={`${selectedMuscleGroup}-days`}>Workout Days</label>
-              <select
-                multiple
-                className="form-control"
-                id={`${selectedMuscleGroup}-days`}
-                value={formData[selectedMuscleGroup].workoutDays}
-                onChange={(e) => {
-                  const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-                  handleDaySelection(selectedMuscleGroup, selectedOptions);
-                }}
-                required
-              >
-                <option value="Monday">Monday</option>
-                <option value="Tuesday">Tuesday</option>
-                <option value="Wednesday">Wednesday</option>
-                <option value="Thursday">Thursday</option>
-                <option value="Friday">Friday</option>
-                <option value="Saturday">Saturday</option>
-                <option value="Sunday">Sunday</option>
-                <option value="Everyday">Everyday</option>
-              </select>
-            </div>
+          <label>Workout Days</label>
+          <div
+    style={{
+      maxHeight: '100px',
+      overflowY: 'scroll',
+      border: '1px solid #ccc',
+      padding: '5px',
+    }}
+  >
+    {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Everyday"].map(day => (
+      <div key={day}>
+        <input
+          type="checkbox"
+          id={`${selectedMuscleGroup}-${day}`}
+          value={day}
+          checked={formData[selectedMuscleGroup].workoutDays.includes(day)}
+          onChange={(e) => {
+            const selectedOptions = formData[selectedMuscleGroup].workoutDays.includes(day)
+              ? formData[selectedMuscleGroup].workoutDays.filter(d => d !== day)
+              : [...formData[selectedMuscleGroup].workoutDays, day];
+            handleDaySelection(selectedMuscleGroup, selectedOptions);
+          }}
+        />
+        <label htmlFor={`${selectedMuscleGroup}-${day}`}>{day}</label>
+      </div>
+    ))}
+        </div>
+        </div>
             <div className="form-group">
               <label htmlFor={`${selectedMuscleGroup}-hours`}>Estimated Time (Hours)</label>
               <select
