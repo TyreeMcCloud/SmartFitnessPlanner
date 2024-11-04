@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+  background-image: url('/public/background.jpg.jpg');
+  background-size: cover;        /* Cover the entire screen */
+  background-repeat: no-repeat;   /* Prevent tiling */
+  background-position: center;    /* Center the image */
+  min-height: 100vh;              /* Ensure it covers the full viewport */
+  color: white;                   /* Text color to contrast with the background */
 }
 
 .App-header {
@@ -69,4 +75,10 @@
     transform: rotate(360deg);
   }
 }
+.logo{
+  float: inline-start;
+  height: auto;
+  width: 80px;
+}
+
 

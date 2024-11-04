@@ -4,6 +4,7 @@ import WorkoutPlan from './components/WorkoutPlan';
 import WorkoutPlanDetail from './components/WorkoutPlanDetail';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import logo from './FitMaster_Logo.png';
 
 function App() {
   const [userName, setUserName] = useState('');
@@ -25,7 +26,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <div className="banner">
-          <h1>Fit Master Pro</h1>
+          <img src={logo} alt="Fit Master Pro Logo" className="logo" />
           {userName ? (
             <div className="user-info">
               <span>Welcome, {userName}!</span>

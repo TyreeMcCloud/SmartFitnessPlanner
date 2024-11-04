@@ -81,10 +81,10 @@ const Login = ({ setUserName }) => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5" >
       <div className="row justify-content-center">
         <div className="col-md-4">
-          <div className="card">
+          <div className="card" style={{ backgroundColor: 'rgba(255, 40, 50, 0.85)' }}>
             <div className="card-body">
               <h2 className="card-title text-center">{isRegistering ? 'Register' : 'Login'}</h2>
               <form onSubmit={isRegistering ? handleRegister : handleLogin}>
