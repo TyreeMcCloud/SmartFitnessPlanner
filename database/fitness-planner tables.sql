@@ -85,8 +85,10 @@ CREATE TABLE Notification (
 CREATE TABLE Progress_Analytics (
     analytics_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT,
-    workout_data TEXT,
+    fitness_goals TEXT,
     progress_data TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES User(user_id)
+    FOREIGN KEY (fitness_goals) REFERENCES Workout_Plan(fitness_goals)
 );
+
