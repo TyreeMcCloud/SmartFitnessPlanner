@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const Progress = ({ user_id, completedWorkouts, updateCompletedWorkouts  }) => {
+//might have to call user id as prop and delete line 9
+const Progress = ({ completedWorkouts, updateCompletedWorkouts  }) => {
   const navigate = useNavigate();
   const workout_plan_id = localStorage.getItem('workout_plan_id'); // Retrieve the ID from local storage
+  const user_id = localStorage.getItem("user_id");
+
 
   useEffect(() => {
     const fetchProgress = async () => {
