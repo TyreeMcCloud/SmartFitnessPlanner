@@ -190,7 +190,7 @@ app.post('/api/complete-workout', (req, res) => {
   if (!user_id || !workout_data) {
     return res.status(400).send('User ID and workout data are required');
   }
-  
+
   const sql = `INSERT INTO Progress_Analytics (user_id, workout_data, progress_data) VALUES (?, ?, ?)`;
   db.query(sql, [user_id, workout_data, 'Completed'], (error, results) => {
     if (error) {
@@ -213,6 +213,19 @@ app.get('/api/workout-progress/:user_id', (req, res) => {
   });
 });
 
+app.post('/api/clear-completed-workouts/:user_id', (req, res) => {
+  const { user_id } = req.params;
+  console.log(`Clearing completed workouts for user_id: ${user_id}`); // Log user_id
+  // SQL to delete completed workouts for the specified user
+  const sql = `DELETE FROM Progress_Analytics WHERE user_id = ? AND progress_data = 'Completed'`;
+  
+  db.query(sql, [user_id], (error, results) => {
+    if (error) {
+      return res.status(500).send('Error clearing completed workouts');
+    }
+    res.status(200).json({ message: 'Completed workouts cleared successfully.' });
+  });
+});
 
 // Start the server
 app.listen(5001, () => {

@@ -113,7 +113,7 @@ const repsByGoal = {
   'Improve Mobility': 15,
 };
 
-const WorkoutPlanDetail = () => {
+const WorkoutPlanDetail = ({ updateCompletedWorkouts, completedWorkouts }) => {
   const { id } = useParams();
   const [plan, setPlan] = useState(null);
   const [workouts, setWorkouts] = useState([]);
@@ -155,8 +155,9 @@ const WorkoutPlanDetail = () => {
         user_id: user_id,  // Send user ID from localStorage
         workout_data: `Workout Plan ID: ${id}`,  // Replace with relevant workout data
       });
-      console.log('Workout marked as complete');
-
+      const response = await axios.get(`http://localhost:5001/api/workout-progress/${user_id}?timestamp=${Date.now()}`);
+      updateCompletedWorkouts(response.data.completed_workouts);
+      console.log("Mark workout as completed");
       // Redirect to the progress page after marking completion
       navigate('/progress');
     } catch (error) {

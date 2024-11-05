@@ -10,6 +10,10 @@ import logo from './FitMaster_Logo.png';
 function App() {
   const [userName, setUserName] = useState('');
   const [userId, setUserId] = useState(null);
+  const [completedWorkouts, setCompletedWorkouts] = useState(0);
+  const updateCompletedWorkouts = (newCount) => {
+    setCompletedWorkouts(newCount);
+  };
 
   useEffect(() => {
     const name = localStorage.getItem('name');
@@ -25,6 +29,7 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem('user_id');
     localStorage.removeItem('name');
+    localStorage.removeItem('workout_plan_id')
     setUserName('');
     setUserId(null);
   };
@@ -49,8 +54,8 @@ function App() {
         <Routes>
           <Route exact path="/" element={<Login setUserName={setUserName} />} />
           <Route path="/workoutplan" element={<WorkoutPlan />} />
-          <Route path="/workout-plan/:id" element={<WorkoutPlanDetail />} />
-          <Route path="/progress" element={<Progress user_id={userId} />} />
+          <Route path="/workout-plan/:id" element={<WorkoutPlanDetail updateCompletedWorkouts={updateCompletedWorkouts} completedWorkouts={completedWorkouts} />} />
+          <Route  path="/progress" element={<Progress user_id={userId} completedWorkouts={completedWorkouts} updateCompletedWorkouts={updateCompletedWorkouts} />} />
         </Routes>
       </main>
     </div>
