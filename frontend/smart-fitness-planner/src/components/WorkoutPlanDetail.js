@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // Define exercises for each muscle group
 const exercises = {
@@ -116,6 +117,7 @@ const WorkoutPlanDetail = () => {
   const { id } = useParams();
   const [plan, setPlan] = useState(null);
   const [workouts, setWorkouts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchPlanDetails = async () => {
@@ -136,6 +138,31 @@ const WorkoutPlanDetail = () => {
   }, [id]);
 
   if (!plan || !workouts) return <p>Loading...</p>;
+
+  const handleComplete = async () => {
+    console.log('button clicked');
+    try {
+      // Retrieve user_id from localStorage
+      const user_id = localStorage.getItem('user_id');
+
+      if (!user_id) {
+        console.error('User ID not found in localStorage');
+        return;
+      }
+
+      // Make an API call to mark the workout as complete
+      await axios.post(`http://localhost:5001/api/complete-workout`, {
+        user_id: user_id,  // Send user ID from localStorage
+        workout_data: `Workout Plan ID: ${id}`,  // Replace with relevant workout data
+      });
+      console.log('Workout marked as complete');
+
+      // Redirect to the progress page after marking completion
+      navigate('/progress');
+    } catch (error) {
+      console.error('Error marking workout as complete:', error);
+    }
+  };
 
   const estimatedTimeInHours = parseInt(plan.time_estimate.split(' ')[0], 10); // Assuming format is like "30 minutes"
   console.log("time",estimatedTimeInHours);
@@ -176,6 +203,8 @@ const WorkoutPlanDetail = () => {
           <p className="card-text"><strong>Goal:</strong> {goal}</p>
           <p className="card-text"><strong>Days:</strong> {plan.workout_days}</p>
           <p className="card-text"><strong>Estimated Time:</strong> {plan.time_estimate}</p>
+          {/* Complete Button */}
+          <button onClick={handleComplete} className="btn btn-success mt-3">Complete</button>
         </div>
       </div>
 

@@ -184,6 +184,34 @@ app.get('/api/workout-plans/:id', (req, res) => {
   });
 });
 
+app.post('/api/complete-workout', (req, res) => {
+  const { user_id, workout_data } = req.body;
+
+  if (!user_id || !workout_data) {
+    return res.status(400).send('User ID and workout data are required');
+  }
+  
+  const sql = `INSERT INTO Progress_Analytics (user_id, workout_data, progress_data) VALUES (?, ?, ?)`;
+  db.query(sql, [user_id, workout_data, 'Completed'], (error, results) => {
+    if (error) {
+      return res.status(500).send('Error marking workout as complete');
+    }
+    res.status(200).send('Workout marked as complete');
+  });
+});
+
+// Endpoint to get the number of completed workouts for a user
+app.get('/api/workout-progress/:user_id', (req, res) => {
+  const { user_id } = req.params;
+
+  const sql = `SELECT COUNT(*) AS completed_workouts FROM Progress_Analytics WHERE user_id = ? AND progress_data = 'Completed'`;
+  db.query(sql, [user_id], (error, results) => {
+    if (error) {
+      return res.status(500).send('Error fetching workout progress');
+    }
+    res.status(200).json(results[0]);
+  });
+});
 
 
 // Start the server

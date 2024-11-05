@@ -2,17 +2,23 @@ import './App.css';
 import Login from './components/Login';
 import WorkoutPlan from './components/WorkoutPlan';
 import WorkoutPlanDetail from './components/WorkoutPlanDetail';
+import Progress from './components/Progress';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import logo from './FitMaster_Logo.png';
 
 function App() {
   const [userName, setUserName] = useState('');
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const name = localStorage.getItem('name');
+    const storedUserId = localStorage.getItem('user_id');
     if (name) {
       setUserName(name);
+    }
+    if (storedUserId) {
+      setUserId(storedUserId);
     }
   }, []);
 
@@ -20,6 +26,7 @@ function App() {
     localStorage.removeItem('user_id');
     localStorage.removeItem('name');
     setUserName('');
+    setUserId(null);
   };
 
   return (
@@ -43,6 +50,7 @@ function App() {
           <Route exact path="/" element={<Login setUserName={setUserName} />} />
           <Route path="/workoutplan" element={<WorkoutPlan />} />
           <Route path="/workout-plan/:id" element={<WorkoutPlanDetail />} />
+          <Route path="/progress" element={<Progress user_id={userId} />} />
         </Routes>
       </main>
     </div>
