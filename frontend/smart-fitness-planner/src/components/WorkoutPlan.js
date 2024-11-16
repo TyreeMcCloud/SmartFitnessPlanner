@@ -234,9 +234,43 @@ const handlePlanClick = (planId) => {
     </div>
   </div>
 )}
-
-        
         <button type="submit" className="btn btn-primary mt-4">Create Workout Plan</button>
+        <div className="row mt-5 mb-5 justify-content-center" style={{ padding: '20px' }}>
+  <div className="col-md-3 text-center">
+    <a
+      href="https://www.habitu.app"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn btn-info btn-block"
+      style={{ opacity: 0.8 }}
+    >
+      Track Your Habits
+    </a>
+  </div>
+  <div className="col-md-3 text-center">
+    <a
+      href="https://www.myfitnesspal.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn btn-success btn-block"
+      style={{ opacity: 0.8 }}
+    >
+      Log Your Nutrition
+    </a>
+  </div>
+  <div className="col-md-3 text-center">
+    <a
+      href="https://www.roguefitness.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn btn-warning btn-block"
+      style={{ opacity: 0.8 }}
+    >
+      Shop Gym Equipment
+    </a>
+  </div>
+</div>
+
       </form>
 
       <h3 className="mt-5">Your Workout Plans</h3>
