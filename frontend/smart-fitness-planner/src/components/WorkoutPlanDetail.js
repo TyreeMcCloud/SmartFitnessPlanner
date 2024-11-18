@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 // Define exercises for each muscle group
 const exercises = {
@@ -117,6 +118,7 @@ const WorkoutPlanDetail = ({ updateCompletedWorkouts, completedWorkouts }) => {
   const { id } = useParams();
   const [plan, setPlan] = useState(null);
   const [workouts, setWorkouts] = useState([]);
+  const [showToast, setShowToast] = useState(false); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -158,8 +160,11 @@ const WorkoutPlanDetail = ({ updateCompletedWorkouts, completedWorkouts }) => {
       const response = await axios.get(`http://localhost:5001/api/workout-progress/${user_id}?timestamp=${Date.now()}`);
       updateCompletedWorkouts(response.data.completed_workouts);
       console.log("Mark workout as completed");
+
+      setShowToast(true);
+      console.log(showToast)
       // Redirect to the progress page after marking completion
-      navigate('/progress');
+      setTimeout(() => navigate('/progress'), 3000);
     } catch (error) {
       console.error('Error marking workout as complete:', error);
     }
@@ -195,7 +200,50 @@ const WorkoutPlanDetail = ({ updateCompletedWorkouts, completedWorkouts }) => {
   return (
     <div className="container mt-5">
       <h2 className="mb-4">Workout Plan Details</h2>
-      
+     {/* Toast Notification */}
+<div
+  className="toast-container position-fixed bottom-0 end-0 p-3"
+  style={{ zIndex: 1050 }}
+>
+  <div
+    className={`toast ${showToast ? 'show' : ''}`}
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+    style={{
+      backgroundColor: '#343a40', // Dark background for better contrast
+      color: '#ffffff', // White text for readability
+      borderRadius: '8px', // Rounded corners
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)', // Subtle shadow
+    }}
+  >
+    <div
+      className="toast-header"
+      style={{
+        backgroundColor: '#28a745', // Green background for the header
+        color: '#ffffff', // White text
+        borderTopLeftRadius: '8px',
+        borderTopRightRadius: '8px',
+      }}
+    >
+      <strong className="me-auto">Workout Completed</strong>
+      <button
+        type="button"
+        className="btn-close btn-close-white"
+        onClick={() => setShowToast(false)}
+        aria-label="Close"
+      ></button>
+    </div>
+    <div className="toast-body">
+      <p style={{ fontSize: '1rem', margin: 0, textAlign: 'center' }}>
+        Good job! You completed a workout!
+      </p>
+    </div>
+  </div>
+</div>
+
+
+
       {/* Plan Information Card */}
       <div className="card mb-4">
         <div className="card-body">
