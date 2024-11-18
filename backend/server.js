@@ -227,6 +227,66 @@ app.post('/api/clear-completed-workouts/:user_id', (req, res) => {
   });
 });
 
+// Update Profile Route
+app.put('/api/updateProfile', async (req, res) => {
+  const { userId, name, email, gender, height, weight, age } = req.body;
+
+  try {
+    // Check if email is already in use by another user (optional)
+    const checkEmailQuery = 'SELECT * FROM User WHERE email = ? AND user_id != ?';
+    db.query(checkEmailQuery, [email, userId], (err, results) => {
+      if (err) {
+        console.error('Database error:', err);
+        return res.status(500).send('Server error');
+      }
+      if (results.length > 0) {
+        return res.status(409).send('Email already in use');
+      }
+
+      // Update the user information in the database
+      const updateUserQuery = 'UPDATE User SET name = ?, email = ?, gender = ?, height = ?, weight = ?, age = ? WHERE user_id = ?';
+      db.query(updateUserQuery, [name, email, gender, height, weight, age, userId], (err, results) => {
+        if (err) {
+          console.error('Database update error:', err);
+          return res.status(500).send('Server error');
+        }
+
+        res.status(200).send('Profile updated successfully');
+      });
+    });
+  } catch (error) {
+    console.error('Error in updating profile:', error);
+    res.status(500).send('Error updating profile');
+  }
+});
+
+// Route to get user data by userId
+app.get('/api/getUser/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const query = 'SELECT * FROM User WHERE user_id = ?';
+    db.query(query, [userId], (err, results) => {
+      if (err) {
+        console.error('Database query error:', err);
+        return res.status(500).send('Server error');
+      }
+
+      if (results.length === 0) {
+        return res.status(404).send('User not found');
+      }
+
+      const user = results[0];
+      res.json(user); // Return user data as JSON
+    });
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    res.status(500).send('Error fetching user data');
+  }
+});
+
+
+
 // Start the server
 app.listen(5001, () => {
   console.log('Server is running on port 5001');

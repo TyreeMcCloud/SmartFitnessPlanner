@@ -80,5 +80,16 @@
   height: auto;
   width: 80px;
 }
+.update-profile-link {
+  margin-left: 20px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.update-profile-link:hover {
+  text-decoration: underline;
+}
+
 
 

@@ -113,48 +113,72 @@ const Login = ({ setUserName }) => {
                  <option value="Other">Other</option>
                  </select>
                  </div>
-                    <div className="form-group mt-3">
-                      <label>Height (cm):</label>
-                      <input
-                        type="number" 
-                        className="form-control" 
-                        value={height} 
-                        onChange={(e) => setHeight(e.target.value)} 
-                        required 
-                      />
-                    </div>
-                    <div className="form-group mt-3">
-                      <label>Weight (lbs):</label>
-                      <input 
-                        type="number" 
-                        className="form-control" 
-                        value={weight} 
-                        onChange={(e) => setWeight(e.target.value)} 
-                        required 
-                      />
-                    </div>
-                    <div className="form-group mt-3">
-                      <label>Age:</label>
-                      <input 
-                        type="number" 
-                        className="form-control" 
-                        value={age} 
-                        onChange={(e) => setAge(e.target.value)} 
-                        required 
-                      />
-                    </div>
+                 <div className="form-group mt-3">
+  <label>Height (cm):</label>
+  <input
+    type="number"
+    className="form-control"
+    value={height}
+    onChange={(e) => {
+      const value = e.target.value;
+      // Ensure the height is positive and a number
+      if (value > 0) {
+        setHeight(value);
+      }
+    }}
+    required
+  />
+</div>
+
+<div className="form-group mt-3">
+  <label>Weight (lbs):</label>
+  <input
+    type="number"
+    className="form-control"
+    value={weight}
+    onChange={(e) => {
+      const value = e.target.value;
+      // Ensure the weight is positive and a number
+      if (value > 0) {
+        setWeight(value);
+      }
+    }}
+    required
+  />
+</div>
+
+<div className="form-group mt-3">
+  <label>Age:</label>
+  <input
+    type="number"
+    className="form-control"
+    value={age}
+    onChange={(e) => {
+      const value = e.target.value;
+      // Ensure the age is positive and a number
+      if (value > 0) {
+        setAge(value);
+      }
+    }}
+    required
+  />
+</div>
                   </>
                 )}
                 <div className="form-group mt-3">
-                  <label>Email:</label>
-                  <input 
-                    type="email" 
-                    className="form-control" 
-                    value={email} 
-                    onChange={(e) => setEmail(e.target.value)} 
-                    required 
-                  />
-                </div>
+  <label>Email:</label>
+  <input
+    type="email"
+    className="form-control"
+    value={email}
+    onChange={(e) => {
+      const value = e.target.value;
+      // Basic email validation (built-in with type="email")
+      setEmail(value);
+    }}
+    required
+  />
+</div>
                 <div className="form-group mt-3">
                   <label>Password:</label>
                   <input 
