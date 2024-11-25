@@ -63,6 +63,7 @@ const Login = ({ setUserName }) => {
       const { user_id, name: userName } = response.data; // Assuming response contains `user_id`
       localStorage.setItem('user_id', user_id); // Store user_id in local storage
       localStorage.setItem('name', userName);
+      setUserName(userName);
       setIsRegistering(false); // Switch back to login after successful registration
       navigate('/workoutplan'); // Navigate to the WorkoutPlan after successful registration
     } catch (error) {
